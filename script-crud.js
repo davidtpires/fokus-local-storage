@@ -2,6 +2,7 @@
 
 const btnAdicionarTarefa = document.querySelector('.app__button--add-task')
 const formAdicionarTarefa = document.querySelector('.app__form-add-task')
+const formCancelarTarefa = document.querySelector('.app__form-footer__button--cancel')
 const textarea = document.querySelector('.app__form-textarea')
 const ulTarefas = document.querySelector('.app__section-task-list')
 
@@ -31,7 +32,7 @@ function criarElementoTarefa(tarefa) {
     botao.classList.add('app_button-edit')
 
     botao.onclick = () => {
-        debugger
+        // debugger
         const novaDescricao = prompt("Qual é o novo nome da tarefa?")
         console.log('Nova descrição da tarefa: ', novaDescricao)
         if (novaDescricao) {
@@ -70,7 +71,14 @@ formAdicionarTarefa.addEventListener('submit', (evento) => {
     formAdicionarTarefa.classList.add('hidden')
 })
 
+
+
 tarefas.forEach(tarefa => {
     const elementoTarefa = criarElementoTarefa(tarefa)
     ulTarefas.append(elementoTarefa)
 });
+
+formCancelarTarefa.addEventListener('click', () => {
+    textarea.value = ''
+    formAdicionarTarefa.classList.toggle('hidden')
+})
