@@ -2,10 +2,15 @@
 
 const btnAdicionarTarefa = document.querySelector('.app__button--add-task')
 const formAdicionarTarefa = document.querySelector('.app__form-add-task')
+const formCancelarTarefa = document.querySelector('.app__form-footer__button--cancel')
 const textarea = document.querySelector('.app__form-textarea')
 const ulTarefas = document.querySelector('.app__section-task-list')
 
 const tarefas = JSON.parse(localStorage.getItem('tarefas')) || []
+
+function atualizarTarefas() {
+    localStorage.setItem('tarefas', JSON.stringify(tarefas))
+}
 
 function criarElementoTarefa(tarefa) {
     const li = document.createElement('li')
@@ -24,11 +29,20 @@ function criarElementoTarefa(tarefa) {
     paragrafo.classList.add('app__section-task-list-item-description')
 
     const botao = document.createElement('button')
-    const imagemBotao = document.createElement('img')
-
-    imagemBotao.setAttribute('src', '/imagens/edit.png')
     botao.classList.add('app_button-edit')
 
+    botao.onclick = () => {
+        // debugger
+        const novaDescricao = prompt("Qual é o novo nome da tarefa?")
+        if (novaDescricao) {
+            paragrafo.textContent = novaDescricao
+            tarefa.descricao = novaDescricao
+            atualizarTarefas()
+        }
+    }
+
+    const imagemBotao = document.createElement('img')
+    imagemBotao.setAttribute('src', '/imagens/edit.png')
     botao.append(imagemBotao)
 
     li.append(svg)
@@ -50,7 +64,7 @@ formAdicionarTarefa.addEventListener('submit', (evento) => {
     tarefas.push(tarefa)
     const elementoTarefa = criarElementoTarefa(tarefa)
     ulTarefas.append(elementoTarefa)
-    localStorage.setItem('tarefas', JSON.stringify(tarefas))
+    atualizarTarefas()
     textarea.value = ''
     formAdicionarTarefa.classList.add('hidden')
 })
@@ -59,3 +73,13 @@ tarefas.forEach(tarefa => {
     const elementoTarefa = criarElementoTarefa(tarefa)
     ulTarefas.append(elementoTarefa)   
 });
+
+// formCancelarTarefa.addEventListener('click', () => {
+//     textarea.value = ''
+//     formAdicionarTarefa.classList.toggle('hidden')
+// })
+
+formCancelarTarefa.onclick = () => {
+    textarea.value = ''
+    formAdicionarTarefa.classList.toggle('hidden')
+}
